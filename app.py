@@ -9,8 +9,10 @@ from markdown.extensions.toc import TocExtension
 from werkzeug.middleware.proxy_fix import ProxyFix
 
 app = Flask(__name__)
-# Fix for HTTPS behind proxy (Railway)
-app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
+# Force HTTPS in url_for and other dynamic links
+app.config['PREFERRED_URL_SCHEME'] = 'https'
+# Fix for HTTPS behind proxy (Railway, Cloudflare, etc.)
+app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1, x_port=1, x_prefix=1)
 
 # Configuration
 CONTENT_DIR = os.path.join(os.path.dirname(__file__), 'content')
@@ -78,7 +80,7 @@ def doc(doc_id):
                            prev_page=prev_page,
                            next_page=next_page,
                            last_updated=last_updated,
-                           canonical_url=request.base_url)
+                           canonical_url=request.base_url.replace('http://', 'https://'))
 
 @app.route('/api/search')
 def search():
@@ -122,10 +124,11 @@ def sitemap():
     from flask import make_response
     import datetime
     
+    root_url = request.url_root.replace('http://', 'https://')
     pages = []
     # Add root
     pages.append({
-        "loc": request.url_root,
+        "loc": root_url,
         "lastmod": datetime.datetime.now().strftime("%Y-%m-%d"),
         "priority": "1.0"
     })
@@ -133,7 +136,7 @@ def sitemap():
     # Add all docs
     for item in SIDEBAR:
         pages.append({
-            "loc": f"{request.url_root}docs/{item['id']}",
+            "loc": f"{root_url}docs/{item['id']}",
             "lastmod": datetime.datetime.now().strftime("%Y-%m-%d"),
             "priority": "0.8"
         })
@@ -152,7 +155,8 @@ def llms():
 @app.route('/robots.txt')
 def robots():
     from flask import Response
-    content = f"User-agent: *\nAllow: /\nDisallow: /api/\n\nSitemap: {request.url_root}sitemap.xml"
+    root_url = request.url_root.replace('http://', 'https://')
+    content = f"User-agent: *\nAllow: /\nDisallow: /api/\n\nSitemap: {root_url}sitemap.xml"
     return Response(content, mimetype='text/plain')
 
 if __name__ == '__main__':
