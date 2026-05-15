@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, abort
+from flask import Flask, render_template, abort, request, jsonify
 import markdown
 from markdown.extensions.codehilite import CodeHiliteExtension
 from markdown.extensions.fenced_code import FencedCodeExtension
@@ -37,7 +37,7 @@ def render_markdown(filename):
         FencedCodeExtension(),
         CodeHiliteExtension(css_class='highlight', linenums=True),
         TableExtension(),
-        TocExtension(baselevel=2, marker=None) # marker=None to prevent automatic injection
+        TocExtension(baselevel=1, marker=None) # marker=None to prevent automatic injection
     ])
     html = md.convert(content)
     return html, md.toc
@@ -73,11 +73,11 @@ def doc(doc_id):
                            current_page=current_page,
                            prev_page=prev_page,
                            next_page=next_page,
-                           last_updated=last_updated)
+                           last_updated=last_updated,
+                           canonical_url=request.base_url)
 
 @app.route('/api/search')
 def search():
-    from flask import request, jsonify
     import re
     query = request.args.get('q', '').lower()
     if not query or len(query) < 2:
@@ -112,6 +112,44 @@ def page_not_found(e):
                            content="<h1>404 - Page Not Found</h1><p>The documentation you are looking for does not exist.</p>", 
                            sidebar=SIDEBAR, 
                            current_id=None), 404
+
+@app.route('/sitemap.xml')
+def sitemap():
+    from flask import make_response
+    import datetime
+    
+    pages = []
+    # Add root
+    pages.append({
+        "loc": request.url_root,
+        "lastmod": datetime.datetime.now().strftime("%Y-%m-%d"),
+        "priority": "1.0"
+    })
+    
+    # Add all docs
+    for item in SIDEBAR:
+        pages.append({
+            "loc": f"{request.url_root}docs/{item['id']}",
+            "lastmod": datetime.datetime.now().strftime("%Y-%m-%d"),
+            "priority": "0.8"
+        })
+        
+    sitemap_xml = render_template('sitemap.xml', pages=pages)
+    response = make_response(sitemap_xml)
+    response.headers["Content-Type"] = "application/xml"
+    return response
+
+@app.route('/llms.txt')
+def llms():
+    from flask import Response
+    content = render_template('llms.txt')
+    return Response(content, mimetype='text/markdown')
+
+@app.route('/robots.txt')
+def robots():
+    from flask import Response
+    content = f"User-agent: *\nAllow: /\nDisallow: /api/\n\nSitemap: {request.url_root}sitemap.xml"
+    return Response(content, mimetype='text/plain')
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

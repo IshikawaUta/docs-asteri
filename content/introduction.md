@@ -4,12 +4,19 @@
 
 ## 🚀 Why Asteri?
 
-In the current Python ecosystem, developers often have to switch between different servers depending on their framework (Flask vs FastAPI) or concurrency model (Sync vs Async). Asteri eliminates this friction by providing:
+In the current Python ecosystem, developers often have to switch between different servers depending on their framework (Flask vs FastAPI) or concurrency model (Sync vs Async). Asteri eliminates this friction by providing a singular, robust platform that handles multiple protocols with ease. Whether you are building a legacy enterprise application or a cutting-edge asynchronous API, Asteri provides the tools to ensure maximum stability and speed.
 
+Asteri is not just a server; it's a complete runtime environment for Python web applications. It focuses on:
 - **Unified Interface**: Use the same CLI arguments for WSGI, ASGI, and even uWSGI.
 - **Superior Concurrency**: Built-in support for multiple worker models including Gevent (greenlets) and Gthreads.
 - **Protocol Auto-Detection**: Asteri can automatically detect the protocol required by your application or environment.
 - **Native Observability**: A premium, built-in status dashboard that provides real-time metrics without external dependencies.
+
+## 🏛️ Architecture Overview
+
+At its core, Asteri uses a **Master-Worker process model**. The Master process (Arbiter) is responsible for managing the lifecycle of worker processes. It handles signals, manages configurations, and ensures that the requested number of workers are always running.
+
+The workers themselves are where the application logic lives. By separating the management logic from the request handling, Asteri ensures that a single crashing worker won't bring down the entire server. This architecture is battle-tested and provides the reliability needed for high-traffic production environments.
 
 ## ✨ Key Features
 
@@ -22,6 +29,10 @@ In the current Python ecosystem, developers often have to switch between differe
 - **Reliability**: Advanced process management with master-worker architecture, graceful timeouts, and automatic worker recycling (max-requests).
 - **Security First**: Easy SSL/TLS integration and support for running workers under restricted users/groups.
 - **Developer Experience**: Professional-grade logging, live-reloading, and an intuitive CLI.
+
+## 🎯 Our Mission
+
+The mission of the Asteri project is to simplify Python web deployment. We believe that developers should spend more time writing code and less time wrestling with server configurations. By providing a "batteries-included" server that works out of the box with any framework, we aim to become the standard choice for the next generation of Python developers.
 
 ## 📊 Performance Benchmark
 

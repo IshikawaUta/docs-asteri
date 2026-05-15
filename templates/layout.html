@@ -3,13 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Asteri Docs - Code Editor Theme</title>
+    <meta name="description" content="Asteri is a high-performance, modern Python web server supporting WSGI and ASGI. Explore our docs for installation, CLI reference, and real-time dashboard.">
+    <link rel="canonical" href="{{ canonical_url }}">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ canonical_url }}">
+    <meta property="og:title" content="Asteri - High-Performance WSGI & ASGI Python Web Server">
+    <meta property="og:description" content="Asteri is a high-performance, modern Python web server supporting WSGI and ASGI. Explore our docs for installation, CLI reference, and real-time dashboard.">
+    <meta property="og:image" content="{{ url_for('static', filename='images/logo.jpg', _external=True) }}">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="{{ canonical_url }}">
+    <meta property="twitter:title" content="Asteri - High-Performance WSGI & ASGI Python Web Server">
+    <meta property="twitter:description" content="Asteri is a high-performance, modern Python web server supporting WSGI and ASGI. Explore our docs for installation, CLI reference, and real-time dashboard.">
+    <meta property="twitter:image" content="{{ url_for('static', filename='images/logo.jpg', _external=True) }}">
+
+    <title>Asteri - High-Performance WSGI & ASGI Python Web Server</title>
     <link rel="icon" href="{{ url_for('static', filename='images/favicon.png') }}" type="image/png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Structured Data (Schema.org) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "TechArticle",
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "{{ canonical_url }}"
+      },
+      "headline": "{{ current_page.title if current_page else 'Asteri Documentation' }}",
+      "description": "Asteri high-performance Python web server documentation: {{ current_page.title if current_page else '' }}",
+      "author": {
+        "@type": "Organization",
+        "name": "Asteri Project"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Asteri Project",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "{{ url_for('static', filename='images/favicon.png', _external=True) }}"
+        }
+      },
+      "datePublished": "2026-05-15",
+      "dateModified": "{{ last_updated if last_updated else '2026-05-15' }}"
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Asteri Web Server",
+      "operatingSystem": "Linux, macOS, Windows",
+      "applicationCategory": "DeveloperApplication",
+      "softwareVersion": "1.1.1",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    }
+    </script>
     <style>
         :root {
             --bg-editor: #1e1e1e;

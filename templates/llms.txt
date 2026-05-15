@@ -1,0 +1,22 @@
+# Asteri Web Server
+
+Asteri is a high-performance, production-ready Python web server designed for modern developer workflows. It supports WSGI, ASGI, and uWSGI protocols with a unified CLI.
+
+## Core Documentation
+- Introduction: /docs/introduction - Overview and mission.
+- Installation: /docs/installation - How to install and deploy in production.
+- Getting Started: /docs/getting-started - Quick start guide for Flask, FastAPI, and more.
+- Worker Types: /docs/workers - Details on sync, gthread, gevent, and asgi workers.
+- CLI Reference: /docs/cli-reference - Complete list of command-line arguments.
+- Configuration: /docs/configuration - How to use Python-based config files.
+- Status Dashboard: /docs/dashboard - Monitoring metrics and health checks.
+
+## Technical Specifications
+- Master-Worker process model (Arbiter architecture).
+- Support for HTTP/1.1 and HTTP/2.
+- Native observability with glassmorphism dashboard.
+- Process management: Graceful timeouts, automatic recycling (max-requests), and live-reloading.
+- Security: SSL/TLS integration, user/group switching.
+
+## Target Audience
+Python developers building web applications, microservices, or APIs who need a reliable and observable runtime environment.
