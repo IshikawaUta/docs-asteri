@@ -1,0 +1,5 @@
+flask
+markdown
+pygments
+markdown-include
+asteri

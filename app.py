@@ -1,0 +1,117 @@
+import os
+from flask import Flask, render_template, abort
+import markdown
+from markdown.extensions.codehilite import CodeHiliteExtension
+from markdown.extensions.fenced_code import FencedCodeExtension
+from markdown.extensions.tables import TableExtension
+from markdown.extensions.toc import TocExtension
+
+app = Flask(__name__)
+
+# Configuration
+CONTENT_DIR = os.path.join(os.path.dirname(__file__), 'content')
+
+# Sidebar Structure (File Tree style)
+SIDEBAR = [
+    {'title': 'Introduction', 'id': 'introduction', 'icon': 'info'},
+    {'title': 'Installation', 'id': 'installation', 'icon': 'download'},
+    {'title': 'Getting Started', 'id': 'getting-started', 'icon': 'play'},
+    {'title': 'Worker Types', 'id': 'workers', 'icon': 'users'},
+    {'title': 'CLI Reference', 'id': 'cli-reference', 'icon': 'terminal'},
+    {'title': 'Configuration', 'id': 'configuration', 'icon': 'settings'},
+    {'title': 'Status Dashboard', 'id': 'dashboard', 'icon': 'activity'},
+    {'title': 'About', 'id': 'developer', 'icon': 'user'},
+    {'title': 'License', 'id': 'license', 'icon': 'file-shield'},
+]
+
+def render_markdown(filename):
+    filepath = os.path.join(CONTENT_DIR, f"{filename}.md")
+    if not os.path.exists(filepath):
+        return None
+    
+    with open(filepath, 'r', encoding='utf-8') as f:
+        content = f.read()
+    
+    md = markdown.Markdown(extensions=[
+        'extra',
+        FencedCodeExtension(),
+        CodeHiliteExtension(css_class='highlight', linenums=True),
+        TableExtension(),
+        TocExtension(baselevel=2, marker=None) # marker=None to prevent automatic injection
+    ])
+    html = md.convert(content)
+    return html, md.toc
+
+@app.route('/')
+def index():
+    return doc('introduction')
+
+@app.route('/docs/<doc_id>')
+def doc(doc_id):
+    content_html, toc_html = render_markdown(doc_id)
+    if content_html is None:
+        abort(404)
+    
+    # Next/Prev logic
+    current_index = next((i for i, item in enumerate(SIDEBAR) if item['id'] == doc_id), -1)
+    prev_page = SIDEBAR[current_index - 1] if current_index > 0 else None
+    next_page = SIDEBAR[current_index + 1] if current_index < len(SIDEBAR) - 1 else None
+    
+    # File metadata (Last Updated)
+    import datetime
+    filepath = os.path.join(CONTENT_DIR, f"{doc_id}.md")
+    mtime = os.path.getmtime(filepath)
+    last_updated = datetime.datetime.fromtimestamp(mtime).strftime('%b %d, %Y')
+    
+    current_page = SIDEBAR[current_index] if current_index != -1 else None
+    
+    return render_template('index.html', 
+                           content=content_html, 
+                           toc=toc_html,
+                           sidebar=SIDEBAR, 
+                           current_id=doc_id,
+                           current_page=current_page,
+                           prev_page=prev_page,
+                           next_page=next_page,
+                           last_updated=last_updated)
+
+@app.route('/api/search')
+def search():
+    from flask import request, jsonify
+    import re
+    query = request.args.get('q', '').lower()
+    if not query or len(query) < 2:
+        return jsonify([])
+    
+    results = []
+    for item in SIDEBAR:
+        content_html, _ = render_markdown(item['id'])
+        # Strip HTML tags for searching
+        text_content = re.sub('<[^<]+?>', '', content_html)
+        
+        if query in item['title'].lower() or query in text_content.lower():
+            # Find snippet
+            snippet = ""
+            idx = text_content.lower().find(query)
+            if idx != -1:
+                start = max(0, idx - 40)
+                end = min(len(text_content), idx + 60)
+                snippet = "..." + text_content[start:end].strip() + "..."
+            
+            results.append({
+                'title': item['title'],
+                'id': item['id'],
+                'snippet': snippet
+            })
+    
+    return jsonify(results)
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('index.html', 
+                           content="<h1>404 - Page Not Found</h1><p>The documentation you are looking for does not exist.</p>", 
+                           sidebar=SIDEBAR, 
+                           current_id=None), 404
+
+if __name__ == '__main__':
+    app.run(debug=True, port=5000)
