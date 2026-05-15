@@ -124,7 +124,7 @@ def sitemap():
     from flask import make_response
     import datetime
     
-    root_url = request.url_root.replace('http://', 'https://')
+    root_url = f"https://{request.host}/"
     pages = []
     # Add root
     pages.append({
@@ -155,7 +155,7 @@ def llms():
 @app.route('/robots.txt')
 def robots():
     from flask import Response
-    root_url = request.url_root.replace('http://', 'https://')
+    root_url = f"https://{request.host}/"
     content = f"User-agent: *\nAllow: /\nDisallow: /api/\n\nSitemap: {root_url}sitemap.xml"
     return Response(content, mimetype='text/plain')
 
