@@ -6,7 +6,11 @@ from markdown.extensions.fenced_code import FencedCodeExtension
 from markdown.extensions.tables import TableExtension
 from markdown.extensions.toc import TocExtension
 
+from werkzeug.middleware.proxy_fix import ProxyFix
+
 app = Flask(__name__)
+# Fix for HTTPS behind proxy (Railway)
+app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
 
 # Configuration
 CONTENT_DIR = os.path.join(os.path.dirname(__file__), 'content')
