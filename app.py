@@ -12,7 +12,7 @@ app = Flask(__name__)
 # Force HTTPS in url_for and other dynamic links
 app.config['PREFERRED_URL_SCHEME'] = 'https'
 # Fix for HTTPS behind proxy (Railway, Cloudflare, etc.)
-app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1, x_port=1, x_prefix=1)
+app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1)
 
 # Configuration
 CONTENT_DIR = os.path.join(os.path.dirname(__file__), 'content')
