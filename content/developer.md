@@ -9,6 +9,7 @@ The goal of Asteri is to provide a unified platform for Python developers. In an
 ## 🛠️ Technical Background
 
 Asteri is built on top of several high-performance libraries:
+
 - **Arbiter Architecture**: Uses a master-worker process model for maximum reliability and zero-downtime reloads.
 - **Protocol Agnostic**: Internally handles the complexities of mapping different gateway interfaces (WSGI/ASGI/uWSGI) to a unified core.
 - **Modern UI**: The built-in dashboard uses modern web standards to provide a glassmorphism interface that feels premium and fast.
@@ -18,6 +19,7 @@ Asteri is built on top of several high-performance libraries:
 This project is open-source and thrives on community feedback. Whether you're fixing a bug, suggesting a feature, or improving documentation, your contributions are welcome.
 
 ## How to Contribute
+
 1. Fork the repository on GitHub.
 2. Create a new branch for your feature or bugfix.
 3. Submit a Pull Request with a detailed description of your changes.

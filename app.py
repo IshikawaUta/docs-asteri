@@ -7,26 +7,51 @@ from markdown.extensions.tables import TableExtension
 from markdown.extensions.toc import TocExtension
 
 from werkzeug.middleware.proxy_fix import ProxyFix
+from flask_compress import Compress
 
 app = Flask(__name__)
+Compress(app)
 # Force HTTPS in url_for and other dynamic links
 app.config['PREFERRED_URL_SCHEME'] = 'https'
 # Fix for HTTPS behind proxy (Railway, Cloudflare, etc.)
 app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1)
+
+@app.before_request
+def redirect_www():
+    """Redirect www to non-www for canonical URL stability."""
+    from flask import redirect
+    host = request.host.lower()
+    if host.startswith('www.'):
+        new_host = host[4:]
+        url = request.url.replace(request.host, new_host, 1)
+        return redirect(url, code=301)
+
+@app.after_request
+def add_security_headers(response):
+    """Add security headers to every response."""
+    # HSTS: Force HTTPS for 1 year
+    response.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains; preload'
+    # Additional Security Headers
+    response.headers['X-Content-Type-Options'] = 'nosniff'
+    response.headers['X-Frame-Options'] = 'SAMEORIGIN'
+    response.headers['X-XSS-Protection'] = '1; mode=block'
+    return response
 
 # Configuration
 CONTENT_DIR = os.path.join(os.path.dirname(__file__), 'content')
 
 # Sidebar Structure (File Tree style)
 SIDEBAR = [
-    {'title': 'Introduction', 'id': 'introduction', 'icon': 'info'},
-    {'title': 'Installation', 'id': 'installation', 'icon': 'download'},
-    {'title': 'Getting Started', 'id': 'getting-started', 'icon': 'play'},
-    {'title': 'Worker Types', 'id': 'workers', 'icon': 'users'},
-    {'title': 'CLI Reference', 'id': 'cli-reference', 'icon': 'terminal'},
-    {'title': 'Configuration', 'id': 'configuration', 'icon': 'settings'},
+    {'title': 'Introduction to Asteri', 'id': 'introduction', 'icon': 'info'},
+    {'title': 'Installation Guide', 'id': 'installation', 'icon': 'download'},
+    {'title': 'Quick Start Guide', 'id': 'getting-started', 'icon': 'play'},
+    {'title': 'Production Deployment', 'id': 'deployment', 'icon': 'server'},
+    {'title': 'Mastering Worker Models', 'id': 'workers', 'icon': 'users'},
+    {'title': 'CLI Mastery Reference', 'id': 'cli-reference', 'icon': 'terminal'},
+    {'title': 'Advanced Configuration', 'id': 'configuration', 'icon': 'settings'},
     {'title': 'Status Dashboard', 'id': 'dashboard', 'icon': 'activity'},
-    {'title': 'About', 'id': 'developer', 'icon': 'user'},
+    {'title': 'Release History', 'id': 'release-history', 'icon': 'history'},
+    {'title': 'About the Developer', 'id': 'developer', 'icon': 'user'},
     {'title': 'License', 'id': 'license', 'icon': 'file-shield'},
 ]
 
@@ -46,6 +71,12 @@ def render_markdown(filename):
         TocExtension(baselevel=1, marker=None) # marker=None to prevent automatic injection
     ])
     html = md.convert(content)
+    
+    # Post-process HTML to add rel="noopener noreferrer" to external links
+    import re
+    html = re.sub(r'<a\s+(?![^>]*rel=)([^>]*href="https?://[^"]+"[^>]*)>', 
+                  r'<a \1 rel="noopener noreferrer" target="_blank">', html)
+    
     return html, md.toc
 
 @app.route('/')

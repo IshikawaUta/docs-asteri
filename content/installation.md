@@ -1,10 +1,18 @@
-# 🚀 Installation & Deployment
+# 🚀 Installation Guide
 
-Asteri is designed to be lightweight and easy to integrate into any environment, from local development to large-scale production clusters.
+Asteri is a lightweight, high-performance Python web server. Follow this guide to install Asteri on your system and start deploying your applications.
 
-## Standard Installation
+## Quick Install (PyPI)
 
-You can install Asteri directly from source for the latest features:
+The easiest way to get Asteri is directly from the Python Package Index (PyPI):
+
+```bash
+pip install asteri
+```
+
+## Source Installation
+
+For developers who want the absolute latest features or wish to contribute, you can install Asteri from the GitHub repository:
 
 ```bash
 git clone https://github.com/IshikawaUta/asteri.git
@@ -12,51 +20,6 @@ cd asteri
 pip install .
 ```
 
-## Production Deployment
-
-For production environments, we recommend running Asteri behind a reverse proxy like Nginx and managing the process with Systemd.
-
-### 🛡️ Nginx Configuration
-
-Nginx should handle SSL termination and static file serving, forwarding application requests to Asteri.
-
-```nginx
-server {
-    listen 80;
-    server_name example.com;
-
-    location / {
-        proxy_pass http://127.0.0.1:8000;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-    }
-    
-    location /static/ {
-        alias /path/to/your/app/static/;
-    }
-}
-```
-
-### ⚙️ Systemd Service
-
-Create a service file at `/etc/systemd/system/asteri.service`:
-
-```ini
-[Unit]
-Description=Asteri Web Server
-After=network.target
-
-[Service]
-User=www-data
-Group=www-data
-WorkingDirectory=/path/to/your/app
-ExecStart=/usr/local/bin/asteri myapp:app -w 4 -k gthread -b 127.0.0.1:8000
-Restart=always
-
-[Install]
-WantedBy=multi-user.target
-```
 
 ## Dependencies
 

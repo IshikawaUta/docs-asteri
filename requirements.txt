@@ -5,3 +5,4 @@ markdown-include
 asteri
 gevent
 setuptools
+flask-compress

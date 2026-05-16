@@ -1,6 +1,6 @@
-# 🛠️ Getting Started
+# 🛠️ Quick Start Guide
 
-Asteri includes several examples to get you started with different frameworks and protocols.
+Ready to experience high-performance Python serving? This guide will show you how to launch your first Asteri-powered application in seconds.
 
 ## Basic Usage
 
@@ -23,12 +23,14 @@ python3 -m asteri example_flask:app -k gthread -w 4 -b 127.0.0.1:8000
 ```
 
 ### FastAPI (ASGI)
+
 Run with modern async workers:
 ```bash
 python3 -m asteri example_fastapi:app -k asgi -w 4 -b 127.0.0.1:8000
 ```
 
 ### Production with Nginx (uWSGI)
+
 Run Asteri in uWSGI mode (automatic detection) and use the provided `example_uwsgi_nginx.conf`:
 ```bash
 python3 -m asteri example_wsgi:app -b 127.0.0.1:8000

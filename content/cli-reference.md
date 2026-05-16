@@ -1,8 +1,9 @@
-# 📖 CLI Reference
+# 📖 Asteri CLI Mastery Reference
 
-Asteri's command-line interface is designed to be both powerful and discoverable. Below is a detailed breakdown of all available arguments organized by functional groups.
+Asteri's command-line interface is engineered for both power and discoverability. This comprehensive reference guide provides a detailed breakdown of every available argument, enabling you to tune your server for any production workload.
 
 ## 🌐 Network Settings
+
 | Argument | Description | Default |
 |----------|-------------|---------|
 | `-b, --bind` | Address to bind (e.g., `127.0.0.1:8000`). Can be specified multiple times. | `127.0.0.1:8000` |
@@ -10,6 +11,7 @@ Asteri's command-line interface is designed to be both powerful and discoverable
 | `--reuse-port` | Enables the `SO_REUSEPORT` flag for better load balancing across workers. | `False` |
 
 ## 👷 Worker Configuration
+
 | Argument | Description | Default |
 |----------|-------------|---------|
 | `-w, --workers` | The number of worker processes for handling requests. | `1` |
@@ -24,6 +26,7 @@ Asteri's command-line interface is designed to be both powerful and discoverable
 | `--preload` | Load the application code before forking worker processes. | `False` |
 
 ## 🔒 Security & Identity
+
 | Argument | Description | Default |
 |----------|-------------|---------|
 | `--certfile` | Path to the SSL certificate file for HTTPS support. | `None` |
@@ -36,6 +39,7 @@ Asteri's command-line interface is designed to be both powerful and discoverable
 | `-m, --umask` | Set the file mode creation mask for the process. | `0` |
 
 ## 📝 Logging & Debugging
+
 | Argument | Description | Default |
 |----------|-------------|---------|
 | `--log-level` | Set the logging threshold (`debug`, `info`, `warning`, `error`, `critical`). | `info` |
@@ -47,6 +51,7 @@ Asteri's command-line interface is designed to be both powerful and discoverable
 | `--print-config` | Display the fully resolved configuration settings and exit. | `False` |
 
 ## ⚙️ Process Management
+
 | Argument | Description | Default |
 |----------|-------------|---------|
 | `-D, --daemon` | Run Asteri in the background as a daemon. | `False` |
@@ -57,6 +62,7 @@ Asteri's command-line interface is designed to be both powerful and discoverable
 | `--chdir` | Change the current working directory before loading the application. | `None` |
 
 ## 🚀 HTTP/2 & Limits
+
 | Argument | Description | Default |
 |----------|-------------|---------|
 | `--http-protocols` | Protocols to support (e.g., `h1,h2` for both HTTP/1 and HTTP/2). | `h1` |

@@ -1,10 +1,11 @@
-# ⚙️ Configuration
+# ⚙️ Advanced Configuration Guide
 
-Asteri offers a flexible configuration system that allows you to manage settings via CLI arguments, environment variables, or a dedicated Python configuration file.
+Asteri is designed for ultimate flexibility. Whether you prefer quick CLI flags, environment-specific variables, or professional Python-based configuration files, Asteri gives you total control over your server environment.
 
 ## Configuration Hierarchy
 
 When settings are defined in multiple places, Asteri follows this priority (highest to lowest):
+
 1. **Command Line Arguments** (overrides everything)
 2. **Environment Variables**
 3. **Configuration File**
@@ -61,6 +62,7 @@ asteri myapp:app -c asteri.conf.py
 ```
 
 ## 💡 Tips for Config Files
+
 - **Lists for Bindings**: Always use a list for the `bind` variable if you want to listen on multiple ports.
 - **Python Logic**: Since the config file is a Python script, you can use logic to determine settings based on environment:
   ```python
