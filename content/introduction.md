@@ -11,7 +11,7 @@ Asteri eliminates this complexity by providing a singular, robust platform that 
 ### Key Pillars of Asteri:
 
 - **Unified Interface**: One set of CLI arguments for all your Python web frameworks. No more learning different flag systems for different servers.
-- **Superior Concurrency**: Native support for Sync, GThread, Gevent, and ASGI worker models, allowing you to choose the best strategy for your specific workload.
+- **Superior Concurrency**: Native support for Sync, GThread, Gevent, ASGI, and Tornado (`tornado`/`gtornado`) worker models, allowing you to choose the best strategy for your specific workload.
 - **Protocol Auto-Detection**: Intelligent handling of HTTP/1.1, HTTP/2, and binary uWSGI on the same port, making migration and multi-protocol support a breeze.
 - **Built-in Observability**: A premium real-time status dashboard included out of the box, providing instant visibility into your server's health and performance metrics.
 
@@ -31,6 +31,7 @@ The workers themselves are where the application logic lives. By separating the 
 - **`gthread` (GThreaded)**: Uses threads to handle multiple requests within each worker process. This is highly efficient for I/O-bound tasks while maintaining a smaller memory footprint than the sync model.
 - **`gevent` (Gevent/Greenlets)**: Leverages cooperative multitasking via greenlets. This allows a single process to handle thousands of concurrent connections with extremely low overhead, making it the king of performance for real-time applications.
 - **`asgi` (Asynchronous)**: Built specifically for Python 3's `async/await` ecosystem. It provides the low-latency performance required by frameworks like FastAPI, Starlette, and Quart.
+- **`tornado` / `gtornado` (Tornado Asynchronous) [NEW]**: Integrates standard Tornado event loops and WSGIContainer setups natively inside child processes. GTornado runs on Greenlets to deliver extreme async performance.
 
 ### Advanced Reliability Features
 
@@ -52,11 +53,14 @@ Asteri is engineered for efficiency. In high-concurrency scenarios, it consisten
 
 | Server Name | Protocol | RPS (Requests Per Second) | Latency (ms) |
 |-------------|----------|---------------------------|--------------|
-| **Asteri (Sync)** | WSGI | **23.71** | **2108.39** |
-| **Asteri (ASGI)** | ASGI | **23.47** | **2130.29** |
-| Asteri (Gevent) | WSGI | 22.84 | 2189.49 |
-| Uvicorn | ASGI | 22.73 | 2199.27 |
-| Gunicorn (Sync) | WSGI | 22.06 | 2266.41 |
+| 🌟 **Asteri (GTornado)** | WSGI | **32.60** | **1533.55** |
+| 🌟 **Asteri (Tornado)** | WSGI | **32.01** | **1561.90** |
+| 🌟 **Asteri (GThread)** | WSGI | **31.94** | **1565.61** |
+| 🌟 **Asteri (ASGI)** | ASGI | **30.78** | **1624.66** |
+| Asteri (Gevent) | WSGI | 30.73 | 1627.05 |
+| Asteri (Sync) | WSGI | 30.65 | 1631.20 |
+| Gunicorn (Sync) | WSGI | 30.50 | 1639.27 |
+| Uvicorn | ASGI | 23.09 | 2165.76 |
 
 *Note: Benchmarks vary based on environment. Tested with 1000 requests at 50 concurrent connections.*
 

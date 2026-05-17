@@ -9,6 +9,14 @@ The dashboard is integrated into the core server and accessible via a dedicated 
 - **Endpoint**: `/asteri-status`
 - **Default URL**: `http://localhost:8000/asteri-status`
 
+### ⚙️ Disabling the Dashboard
+
+If you prefer to hide or disable the monitoring dashboard completely in production, you can pass the `--disable-dashboard` flag to the CLI, or set `disable_dashboard = True` in your python configuration file.
+
+### 🌪️ Zero-Configuration Tornado Integration
+
+For standard worker classes (`sync`, `gthread`, `asgi`, `gevent`), the status dashboard is served directly at the socket level. For `tornado` and `gtornado` workers, Asteri natively wraps the WSGI application with a high-performance `TornadoDashboardMiddleware` behind the scenes, intercepting `/asteri-status` and system logs automatically without requiring the developer to add any routing logic to their codebase.
+
 ## 🔒 Security Note
 
 In production, it is highly recommended to protect this endpoint using Nginx `auth_basic` or by restricting access to internal IP addresses to prevent unauthorized access to server metrics.

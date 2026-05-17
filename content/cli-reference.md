@@ -15,7 +15,7 @@ Asteri's command-line interface is engineered for both power and discoverability
 | Argument | Description | Default |
 |----------|-------------|---------|
 | `-w, --workers` | The number of worker processes for handling requests. | `1` |
-| `-k, --worker-class` | The type of workers to run (`sync`, `gthread`, `asgi`, `gevent`). | `sync` |
+| `-k, --worker-class` | The type of workers to run (`sync`, `gthread`, `asgi`, `gevent`, `tornado`, `gtornado`). | `sync` |
 | `--threads` | Number of threads per worker (only applies to `gthread`). | `1` |
 | `--worker-connections` | Maximum simultaneous clients per worker. | `1000` |
 | `-t, --timeout` | Workers silent for more than this many seconds are killed and restarted. | `30` |
@@ -50,7 +50,7 @@ Asteri's command-line interface is engineered for both power and discoverability
 | `--check-config` | Validate the current configuration and exit. | `False` |
 | `--print-config` | Display the fully resolved configuration settings and exit. | `False` |
 
-## ⚙️ Process Management
+## ⚙️ Process & Dashboard Management
 
 | Argument | Description | Default |
 |----------|-------------|---------|
@@ -60,13 +60,30 @@ Asteri's command-line interface is engineered for both power and discoverability
 | `-e, --env` | Set environment variables (e.g., `NAME=VALUE`). Can be repeated. | `[]` |
 | `--reload` | Automatically restart workers when application code changes. | `False` |
 | `--chdir` | Change the current working directory before loading the application. | `None` |
+| `--disable-dashboard` | Completely disable the `/asteri-status` real-time monitoring dashboard route. | `False` |
 
-## 🚀 HTTP/2 & Limits
+## 🚀 Advanced IPC & Observability
+
+| Argument | Description | Default |
+|----------|-------------|---------|
+| `--control-socket` | Path to a Unix domain socket for real-time runtime cluster administration. | `None` |
+| `--dirty-apps` | Configuration mapping string for routing multiple apps dynamically. | `None` |
+| `--stash-address` | Unix socket path or `host:port` configuration of the active StashServer. | `None` |
+| `--statsd-host` | StatsD host to emit metrics. | `None` |
+| `--statsd-port` | StatsD port. | `8125` |
+| `--statsd-prefix` | StatsD prefix. | `asteri` |
+
+## 📐 HTTP Limits
+
+| Argument | Description | Default |
+|----------|-------------|---------|
+| `--limit-request-line` | Maximum size of the HTTP request line in bytes. | `4094` |
+| `--limit-request-fields` | Maximum number of header fields per request. | `100` |
+| `--limit-request-field_size` | Maximum size of a single header field in bytes. | `8190` |
+
+## 🚀 HTTP/2 Configuration
 
 | Argument | Description | Default |
 |----------|-------------|---------|
 | `--http-protocols` | Protocols to support (e.g., `h1,h2` for both HTTP/1 and HTTP/2). | `h1` |
 | `--http2-max-concurrent-streams` | Maximum number of concurrent streams for HTTP/2. | `100` |
-| `--limit-request-line` | Maximum size of the HTTP request line in bytes. | `4094` |
-| `--limit-request-fields` | Maximum number of header fields per request. | `100` |
-| `--limit-request-field_size` | Maximum size of a single header field in bytes. | `8190` |

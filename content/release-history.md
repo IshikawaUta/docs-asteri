@@ -4,7 +4,27 @@ Track the evolution of the Asteri web server.
 
 ---
 
-## v1.2.1 (Current)
+## v1.2.2 (Current)
+*May 17, 2026*
+
+This release is a premier update, adding massive event loop integrations (Tornado), unified visual dashboards, robust ASGI fixes, and comprehensive regression test suites.
+
+### 🚀 New Features
+
+- **Native Tornado Integration**: Added `tornado` and `gtornado` worker classes for high-performance non-blocking async loops.
+- **Unified Premium Status Dashboard**: Created a gorgeous, centralized status page builder in glassmorphism UI for all worker classes.
+- **Robust Intercept Middleware**: Automated dashboard/log routing inside Tornado workers using transparent WSGI wrapper middlewares.
+- **Exhaustive Regression Suite**: Upgraded the CLI test framework to cover 100% of the 36+ CLI options and system arguments.
+
+### 🐛 Bug Fixes
+
+- **FastAPI/Flask ASGI Compatibility**: Fixed the ASGI `__call__` calling convention parameter count bug in modern frameworks.
+- **Zero Orphaned Workers**: Fixed potential zombie process hazards during abrupt shutdowns.
+- **CI/CD Integration**: Expanded GitHub Actions workflow to include full discover-based unit tests.
+
+---
+
+## v1.2.1
 *May 16, 2026*
 
 This is a major stability and architectural update, addressing critical bugs discovered during production stress testing.

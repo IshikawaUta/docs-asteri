@@ -34,6 +34,15 @@ Native support for modern asynchronous applications and protocols (HTTP/2, WebSo
 - **Best for**: FastAPI, Starlette, and other async frameworks.
 - **Mechanism**: Implements the ASGI 3.0 specification. It leverages Python's `asyncio` to handle concurrent requests efficiently.
 
+### 5. Tornado & GTornado Workers (`tornado` / `gtornado`) [NEW]
+
+An asynchronous worker model leveraging Tornado's high-performance non-blocking HTTP server and event loop container.
+
+- **Best for**: WSGI-based applications requiring premium asynchronous connection handling, WebSocket gateways, or event-driven backends.
+- **`tornado`**: Standard asynchronous event loop powered by Tornado's native `IOLoop` and `tornado.wsgi.WSGIContainer`.
+- **`gtornado`**: Greenlet-enabled cooperative multitasking worker class running Tornado loops for extreme event-driven performance.
+- **Native Middleware Interception**: Automatically wraps target applications with `TornadoDashboardMiddleware` under the hood. The `/asteri-status` and system logs are intercepted transparently at the core network level without requiring any custom routes in your code.
+
 ## 📊 Comparison Table
 
 | Worker | Concurrency Type | I/O Performance | Complexity | Use Case |
@@ -42,9 +51,12 @@ Native support for modern asynchronous applications and protocols (HTTP/2, WebSo
 | `gthread` | Thread | Medium | Medium | Standard Web Apps |
 | `gevent` | Greenlet | High | Medium | High Traffic/Chat |
 | `asgi` | AsyncIO | High | High | Modern Async Apps |
+| `tornado` [NEW] | Async Loop | High | Medium | High Concurrency/WSGI |
+| `gtornado` [NEW] | Greenlet + Async | Very High | High | Extreme Event-driven |
 
 ## 💡 Recommendation
 
 - **For Flask/Django**: Start with `gthread` (2-4 workers, 2-4 threads).
 - **For FastAPI**: Always use `asgi`.
-- **For High Concurrency**: Experiment with `gevent` if your application is compatible.
+- **For Tornado Event Loop Integration**: Use `tornado` or `gtornado` for excellent asynchronous connection pooling.
+- **For High Concurrency**: Experiment with `gevent` or `gtornado` if your application is compatible.
