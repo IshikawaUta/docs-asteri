@@ -1,1 +1,1 @@
-web: asteri app:app -k gevent -w 4 -b 0.0.0.0:$PORT --disable-dashboard
+web: asteri app:app -k gevent -w 4 --disable-dashboard -b 0.0.0.0:$PORT
