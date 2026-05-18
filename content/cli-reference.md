@@ -73,6 +73,8 @@ Asteri's command-line interface is engineered for both power and discoverability
 | `--statsd-port` | StatsD port. | `8125` |
 | `--statsd-prefix` | StatsD prefix. | `asteri` |
 
+> 💡 **Prometheus Metrics**: Asteri exposes a native `/metrics` endpoint in Prometheus `0.0.4` format automatically. No additional flags required — metrics are aggregated across all worker processes via the internal Stash IPC server.
+
 ## 📐 HTTP Limits
 
 | Argument | Description | Default |
@@ -81,9 +83,11 @@ Asteri's command-line interface is engineered for both power and discoverability
 | `--limit-request-fields` | Maximum number of header fields per request. | `100` |
 | `--limit-request-field_size` | Maximum size of a single header field in bytes. | `8190` |
 
-## 🚀 HTTP/2 Configuration
+## 🚀 HTTP Protocols & Limits
 
 | Argument | Description | Default |
 |----------|-------------|---------|
-| `--http-protocols` | Protocols to support (e.g., `h1,h2` for both HTTP/1 and HTTP/2). | `h1` |
+| `--http-protocols` | Protocols to support: `h1` (HTTP/1.1), `h2` (HTTP/2), `h3` (HTTP/3 QUIC). | `h1` |
 | `--http2-max-concurrent-streams` | Maximum number of concurrent streams for HTTP/2. | `100` |
+
+> 💡 **HTTP/3 (QUIC)**: Enable HTTP/3 with `--http-protocols h3`. Asteri's native QUIC implementation handles QPACK header compression and QUIC packet framing out-of-the-box.

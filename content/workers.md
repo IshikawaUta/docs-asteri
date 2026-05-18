@@ -34,7 +34,7 @@ Native support for modern asynchronous applications and protocols (HTTP/2, WebSo
 - **Best for**: FastAPI, Starlette, and other async frameworks.
 - **Mechanism**: Implements the ASGI 3.0 specification. It leverages Python's `asyncio` to handle concurrent requests efficiently.
 
-### 5. Tornado & GTornado Workers (`tornado` / `gtornado`) [NEW]
+### 5. Tornado & GTornado Workers (`tornado` / `gtornado`)
 
 An asynchronous worker model leveraging Tornado's high-performance non-blocking HTTP server and event loop container.
 
@@ -51,8 +51,8 @@ An asynchronous worker model leveraging Tornado's high-performance non-blocking 
 | `gthread` | Thread | Medium | Medium | Standard Web Apps |
 | `gevent` | Greenlet | High | Medium | High Traffic/Chat |
 | `asgi` | AsyncIO | High | High | Modern Async Apps |
-| `tornado` [NEW] | Async Loop | High | Medium | High Concurrency/WSGI |
-| `gtornado` [NEW] | Greenlet + Async | Very High | High | Extreme Event-driven |
+| `tornado` | Async Loop | High | Medium | High Concurrency/WSGI |
+| `gtornado` | Greenlet + Async | Very High | High | Extreme Event-driven |
 
 ## 💡 Recommendation
 

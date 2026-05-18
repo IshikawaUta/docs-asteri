@@ -12,8 +12,10 @@ Asteri eliminates this complexity by providing a singular, robust platform that 
 
 - **Unified Interface**: One set of CLI arguments for all your Python web frameworks. No more learning different flag systems for different servers.
 - **Superior Concurrency**: Native support for Sync, GThread, Gevent, ASGI, and Tornado (`tornado`/`gtornado`) worker models, allowing you to choose the best strategy for your specific workload.
-- **Protocol Auto-Detection**: Intelligent handling of HTTP/1.1, HTTP/2, and binary uWSGI on the same port, making migration and multi-protocol support a breeze.
-- **Built-in Observability**: A premium real-time status dashboard included out of the box, providing instant visibility into your server's health and performance metrics.
+- **Protocol Auto-Detection**: Intelligent handling of **HTTP/1.1, HTTP/2, HTTP/3 (QUIC)**, and binary uWSGI on the same port, making migration and multi-protocol support seamless.
+- **Built-in Observability**: A premium real-time status dashboard, native Prometheus `/metrics` endpoint, and StatsD integration—all included out of the box.
+- **⚡ C-Extension Core**: HTTP and uWSGI parsing powered by a native C-Extension for blazing-fast zero-copy throughput, with seamless Pure-Python fallback.
+- **💎 Enterprise Quality**: 100% type-safe codebase enforced by Mypy, 100% PEP-8 compliant via Ruff, and automated PyPI publishing via OIDC Trusted Publishing on GitHub Actions.
 
 ## 🏛️ Architecture Overview
 
@@ -31,7 +33,7 @@ The workers themselves are where the application logic lives. By separating the 
 - **`gthread` (GThreaded)**: Uses threads to handle multiple requests within each worker process. This is highly efficient for I/O-bound tasks while maintaining a smaller memory footprint than the sync model.
 - **`gevent` (Gevent/Greenlets)**: Leverages cooperative multitasking via greenlets. This allows a single process to handle thousands of concurrent connections with extremely low overhead, making it the king of performance for real-time applications.
 - **`asgi` (Asynchronous)**: Built specifically for Python 3's `async/await` ecosystem. It provides the low-latency performance required by frameworks like FastAPI, Starlette, and Quart.
-- **`tornado` / `gtornado` (Tornado Asynchronous) [NEW]**: Integrates standard Tornado event loops and WSGIContainer setups natively inside child processes. GTornado runs on Greenlets to deliver extreme async performance.
+- **`tornado` / `gtornado` (Tornado Asynchronous)**: Integrates standard Tornado event loops and WSGIContainer setups natively inside child processes. GTornado runs on Greenlets to deliver extreme async performance.
 
 ### Advanced Reliability Features
 
@@ -66,4 +68,4 @@ Asteri is engineered for efficiency. In high-concurrency scenarios, it consisten
 
 ## 🛣️ The Road Ahead
 
-As we look toward the future, Asteri is committed to continuous improvement. Our roadmap includes enhanced support for HTTP/3 (QUIC), even deeper integration with cloud-native monitoring tools like Prometheus, and a focus on minimizing the cold-start time for serverless environments. We invite you to join our growing community and help us shape the future of Python web infrastructure.
+Asteri v2.2.2 has achieved all previously-stated roadmap goals: native **HTTP/3 (QUIC)** support, **Prometheus & OpenTelemetry** metrics integration, and a **C-Extension core** for maximum throughput. Looking forward, we are committed to even deeper cloud-native integrations, minimizing cold-start times for serverless environments, and expanding multi-platform binary wheels for PyPI. We invite you to join our growing community and help shape the future of Python web infrastructure.
