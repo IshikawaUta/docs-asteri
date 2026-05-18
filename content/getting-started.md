@@ -35,3 +35,17 @@ Run Asteri in uWSGI mode (automatic detection) and use the provided `example_uws
 ```bash
 python3 -m asteri example_wsgi:app -b 127.0.0.1:8000
 ```
+
+### HTTP/3 (QUIC) — New in v2.2.2
+
+Enable native HTTP/3 support with the `--http-protocols` flag:
+```bash
+python3 -m asteri example_fastapi:app -k asgi -w 4 --http-protocols h3 -b 127.0.0.1:8000
+```
+
+### Prometheus Metrics — New in v2.2.2
+
+Asteri exposes a `/metrics` endpoint automatically with no extra configuration needed:
+```bash
+curl http://127.0.0.1:8000/metrics
+```

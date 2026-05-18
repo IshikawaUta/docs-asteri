@@ -55,16 +55,16 @@ Asteri is engineered for efficiency. In high-concurrency scenarios, it consisten
 
 | Server Name | Protocol | RPS (Requests Per Second) | Latency (ms) |
 |-------------|----------|---------------------------|--------------|
-| 🌟 **Asteri (GTornado)** | WSGI | **32.60** | **1533.55** |
-| 🌟 **Asteri (Tornado)** | WSGI | **32.01** | **1561.90** |
-| 🌟 **Asteri (GThread)** | WSGI | **31.94** | **1565.61** |
-| 🌟 **Asteri (ASGI)** | ASGI | **30.78** | **1624.66** |
-| Asteri (Gevent) | WSGI | 30.73 | 1627.05 |
-| Asteri (Sync) | WSGI | 30.65 | 1631.20 |
-| Gunicorn (Sync) | WSGI | 30.50 | 1639.27 |
-| Uvicorn | ASGI | 23.09 | 2165.76 |
+| 🌟 **Asteri (ASGI)** | ASGI | **32.27** | **1549.25** |
+| 🌟 **Asteri (Tornado)** | WSGI | **31.91** | **1566.97** |
+| 🌟 **Asteri (Sync)** | WSGI | **31.90** | **1567.19** |
+| 🌟 **Asteri (GThread)** | WSGI | **31.59** | **1582.64** |
+| 🌟 **Asteri (Gevent)** | WSGI | **31.52** | **1586.23** |
+| Gunicorn (Sync) | WSGI | 32.17 | 1554.04 |
+| Uvicorn | ASGI | 31.22 | 1601.34 |
+| Asteri (GTornado) | WSGI | 30.15 | 1658.61 |
 
-*Note: Benchmarks vary based on environment. Tested with 1000 requests at 50 concurrent connections.*
+*Note: Benchmarks vary based on environment. Tested with 1000 requests at 50 concurrent connections on Asteri v2.2.2.*
 
 ## 🛣️ The Road Ahead
 

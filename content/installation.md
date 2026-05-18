@@ -20,10 +20,13 @@ cd asteri
 pip install .
 ```
 
+> ⚡ **C-Extension Performance Core**: Asteri includes a native C-Extension (`asteri.fastparser`) for blazing-fast HTTP parsing. It is compiled automatically during `pip install`. If compilation fails, Asteri gracefully falls back to its Pure-Python parser with no loss of functionality.
+
 
 ## Dependencies
 
 - **Python**: 3.8 or higher.
 - **Watchdog**: Required for the `--reload` feature.
 - **Gevent**: Required if using the `gevent` worker class.
+- **h2**: Required for HTTP/2 support.
 - **Setproctitle**: Optional, used for professional process naming in `ps` or `top`.
