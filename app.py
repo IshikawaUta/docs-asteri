@@ -58,7 +58,7 @@ SIDEBAR = [
 def render_markdown(filename):
     filepath = os.path.join(CONTENT_DIR, f"{filename}.md")
     if not os.path.exists(filepath):
-        return None
+        return None, None
     
     with open(filepath, 'r', encoding='utf-8') as f:
         content = f.read()
@@ -123,6 +123,8 @@ def search():
     results = []
     for item in SIDEBAR:
         content_html, _ = render_markdown(item['id'])
+        if content_html is None:
+            continue
         # Strip HTML tags for searching
         text_content = re.sub('<[^<]+?>', '', content_html)
         
@@ -148,7 +150,8 @@ def page_not_found(e):
     return render_template('index.html', 
                            content="<h1>404 - Page Not Found</h1><p>The documentation you are looking for does not exist.</p>", 
                            sidebar=SIDEBAR, 
-                           current_id=None), 404
+                           current_id=None,
+                           canonical_url=request.base_url.replace('http://', 'https://')), 404
 
 @app.route('/sitemap.xml')
 def sitemap():
